@@ -22,8 +22,8 @@ public class EditorPane extends ViewOwner {
     // The Editor
     Editor           _editor, _realEditor;
     
-    // The XML TextView
-    TextView         _xmlText;
+    // The HTM TextView
+    TextView         _htmText;
     
     // A box to hold selection path
     RowView          _selPathBox;
@@ -335,8 +335,8 @@ protected void initUI()
     _viewTree.setOwner(this);
     _editorSplit.removeItem(_viewTree);
     
-    // Create XMLText
-    _xmlText = new TextView(); _xmlText.setName("XMLText"); _xmlText.setFont(Font.Arial14);
+    // Create HTMText
+    _htmText = new TextView(); _htmText.setName("HTMText"); _htmText.setFont(Font.Arial14);
     
     // Get SelPathBox
     _selPathBox = getView("SelPathBox", RowView.class);
@@ -361,7 +361,7 @@ protected void initUI()
     // Add GalleryPane
     _tabView = getView("MainTabView", TabView.class);
     _tabView.addTab(" Add Views ", _gallery.getUI(), 0);
-    _tabView.addTab(" View Props ", _viewTool.getUI(), 1);
+    _tabView.addTab(" Tag Props ", _viewTool.getUI(), 1);
 }
 
 /**
@@ -472,12 +472,12 @@ protected void respondUI(ViewEvent anEvent)
         _transPane.setContent(_editorSplit);
     }
     
-    // Handle XMLButton
-    if(anEvent.equals("XMLButton")) {
+    // Handle HTMButton
+    if(anEvent.equals("HTMButton")) {
         if(_transPane.getContent()==_editorSplit) _transPane.setTransition(TransitionPane.MoveRight);
         else _transPane.setTransition(TransitionPane.MoveLeft);
-        _transPane.setContent(_xmlText);
-        updateXMLText();
+        _transPane.setContent(_htmText);
+        updateHTMText();
      }
 
     // Handle PreviewButton
@@ -535,7 +535,9 @@ protected void updateSelPathBox()
     _selPathBox.removeChildren(); if(_selPathDeep==null) _selPathDeep = getSelView();
     View sview = getSelView(), cview = getDoc(), view = _selPathDeep;
     while(view!=null) { View view2 = view;
-        Label label = new Label(view.getClass().getSimpleName()); label.setPadding(2,2,2,2);
+        String name = view instanceof HTElement? '<' + ((HTElement)view).getTagName() + '>' :
+            view.getClass().getSimpleName();
+        Label label = new Label(name); label.setPadding(2,2,2,2);
         if(view==sview) label.setFill(Color.LIGHTGRAY);
         label.addEventHandler(e -> selPathItemClicked(view2), MouseRelease);
         _selPathBox.addChild(label, 0);
@@ -545,26 +547,26 @@ protected void updateSelPathBox()
 }
 
 /**
- * Updates the XMLText TextView.
+ * Updates the HTMText TextView.
  */
-protected void updateXMLText()
+protected void updateHTMText()
 {
     // If not showing, just return
-    if(!_xmlText.isShowing()) return;
+    if(!_htmText.isShowing()) return;
     
     // Get View
-    HTDoc view = getDoc();
-    String text = SnapUtils.getText(new ViewArchiver().toXML(view).getBytes());
-    _xmlText.setText(text);
+    HTDoc doc = getDoc();
+    String text = doc.getSoup().outerHtml();
+    _htmText.setText(text);
 }
 
 /**
- * Updates the XMLText TextView.
+ * Updates the HTMText TextView.
  */
-protected void updateXMLTextSel()
+protected void updateHTMTextSel()
 {
     // If not showing, just return
-    if(!_xmlText.isShowing()) return;
+    if(!_htmText.isShowing()) return;
     
     // Get View
     View sview = getSelView();
@@ -696,9 +698,7 @@ public class ViewTreeResolver extends TreeResolver <View> {
     public String getText(View anItem)
     {
         String str = anItem.getClass().getSimpleName();
-        if(anItem.getClass()==HTElement.class) str += ' ' + ((HTElement)anItem).getSoup().tagName();
-        //String name = anItem.getName(); if(name!=null) str += " - " + name;
-        //String text = anItem.getText(); if(text!=null) str += " \"" + text + "\" ";
+        if(anItem instanceof HTElement) str = '<' + ((HTElement)anItem).getTagName() + '>';
         return str;
     }
 

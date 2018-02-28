@@ -1,6 +1,7 @@
 package snaphtml.app;
 import snap.gfx.Color;
 import snap.view.*;
+import snaphtml.html.HTUtils;
 
 /**
  * A custom class.
@@ -18,26 +19,11 @@ public class GalleryView extends ParentView {
  */
 public GalleryView()
 {
-    // Basic Classes
-    Class <? extends View> classes[] = new Class[] { Label.class, Button.class, ToggleButton.class, CheckBox.class,
-        RadioButton.class, TextField.class, ComboBox.class, Slider.class, ThumbWheel.class,
-        ProgressBar.class, Spinner.class,
-            
-        // Containers
-        TextView.class, TitleView.class, TabView.class, ScrollView.class, SplitView.class,
-            
-        // Lists
-        ListView.class, TableView.class, TreeView.class, BrowserView.class,
-            
-        // Simple containers
-        BoxView.class, ColView.class, RowView.class, BorderView.class, View.class
-            
-        // Graphics
-        //ImageView.class, RectView.class, PathView.class, ArcView.class, StringView.class DocView.class, PageView.class
-    };
+    // Basic tags
+    String tags[] = { "p", "div", "a", "img", "hr", "br", "ul", "ol", "li", "table", "tr", "td" };
     
-    for(Class cls : classes)
-        addChild(new ItemView(cls));
+    for(String tag : tags)
+        addChild(new ItemView(tag));
 }
     
 /**
@@ -75,17 +61,16 @@ protected void layoutImpl()
 public class ItemView extends BoxView {
     
     /** Create new ItemView. */
-    public ItemView(Class <? extends View> aCls)
+    public ItemView(String aTag)
     {
         // Configure this view
-        setBorder(Color.LIGHTGRAY,1);
+        setBorder(Color.LIGHTGRAY,1); setVertical(true);
         enableEvents(MousePress);
         
         // Create item view, configure and add
-        View view = null; try { view = aCls.newInstance(); } catch(Exception e) { }
-        view.setMinSize(24,12); view.setPickable(false);
-        ViewHpr.getHpr(view).configureGallery(view);
-        setContent(view);
+        View fname = new Label(HTUtils.getTagFullName(aTag)); fname.setMinSize(24,12); fname.setPickable(false);
+        View tag = new Label('<' + aTag + '>'); tag.setMinSize(24,12); tag.setPickable(false);
+        setChildren(fname, tag);
     }
     
     /** Handle events. */

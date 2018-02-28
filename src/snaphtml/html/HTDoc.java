@@ -49,6 +49,11 @@ public HTDoc(Object aSource)
 }
 
 /**
+ * Returns the tag name.
+ */
+public String getTagName()  { return "html"; }
+
+/**
  * Returns the document source URL.
  */
 public WebURL getSourceURL()  { return _srcURL; }
@@ -88,7 +93,7 @@ public WebURL getSourceURL(String aPath)
 public void readHTML(Element aJSoup, HTDoc aDoc)
 {
     // Get Head and Title
-    Document doc = (Document)aJSoup;
+    Document doc = (Document)aJSoup; _jsoup = doc;
     Element head = doc.head();
     Element title = doc.getElementsByTag("title").first();
     if(title!=null) {

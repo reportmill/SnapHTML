@@ -206,6 +206,6 @@ protected void respondUI(ViewEvent anEvent)
 }
 
 /** Returns the name. */
-public String getName()  { return "View Props"; }
+public String getName()  { return "Tag Props"; }
 
 }

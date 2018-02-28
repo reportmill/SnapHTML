@@ -210,7 +210,7 @@ protected void mouseRelease(ViewEvent anEvent)
 {
     Point pnt = anEvent.getPoint(_cbox);
     View view = ViewUtils.getDeepestChildAt(_cbox, pnt.getX(), pnt.getY());
-    while(view!=null && !view.isGuest() && view.getParent()!=_cbox)
+    while(view!=null && !(view instanceof HTElement) && view.getParent()!=_cbox)
         view = view.getParent();
     if(view==null || view==_cbox) view = getDoc();
     setSelView(view);

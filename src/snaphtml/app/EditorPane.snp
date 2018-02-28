@@ -12,7 +12,7 @@
     <Button Name="RedoButton" PrefWidth="22" PrefHeight="22" ToolTip="Redo" image="Edit_Redo.png" ShowBorder="false" />
     <RowView LeanX="RIGHT">
       <ToggleButton Name="EditButton" PrefWidth="52" PrefHeight="20" text="Edit" Position="CENTER_LEFT" Selected="true" Group="tge" />
-      <ToggleButton Name="XMLButton" PrefWidth="52" PrefHeight="20" LeanX="RIGHT" text="XML" Position="CENTER" Group="tge" />
+      <ToggleButton Name="HTMButton" PrefWidth="52" PrefHeight="20" LeanX="RIGHT" text="HTML" Position="CENTER" Group="tge" />
       <ToggleButton Name="PreviewButton" PrefWidth="52" PrefHeight="20" text="Run" Position="CENTER_RIGHT" Group="tge" />
     </RowView>
   </RowView>

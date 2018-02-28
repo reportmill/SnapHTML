@@ -32,6 +32,11 @@ public String getTagName()
 }
 
 /**
+ * Returns the tag name, uppercase.
+ */
+public String getTagNameUC()  { return getTagName().toUpperCase(); }
+
+/**
  * Returns the default alignment.
  */    
 public Pos getDefaultAlign()  { return Pos.TOP_LEFT; }
