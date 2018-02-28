@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RowView Padding="20,20,5,20" GrowWidth="true" Spacing="20">
+  <Font Name="Arial" Size="12" />
+  <ColView GrowHeight="true" Spacing="6">
+    <RowView GrowWidth="true" Spacing="4">
+      <Label text="Name:" />
+      <TextField Name="NameText" PrefWidth="160" GrowWidth="true" ColCount="12" />
+    </RowView>
+    <RowView GrowWidth="true" Spacing="4">
+      <Label text="Text:" />
+      <TextField Name="TextText" GrowWidth="true" ColCount="12" />
+    </RowView>
+    <RowView GrowWidth="true" Spacing="4">
+      <Label text="ToolTip:" />
+      <TextField Name="ToolTipText" GrowWidth="true" ColCount="12" />
+    </RowView>
+    <RowView PrefWidth="148" GrowWidth="true" Spacing="3">
+      <Label PrefWidth="64" text="Pref Width:" />
+      <Spinner Name="PrefWidthSpinner" PrefWidth="75" />
+      <Button Name="PWAdd10Button" PrefWidth="24" PrefHeight="22" Padding="2" text="+10" ShowBorder="false" />
+      <Button Name="PWResetButton" PrefWidth="20" PrefHeight="20" ToolTip="Clear Font Size" text="&#10226;" ShowBorder="false" />
+    </RowView>
+    <RowView GrowWidth="true" Spacing="3">
+      <Label PrefWidth="64" text="Pref Height:" />
+      <Spinner Name="PrefHeightSpinner" PrefWidth="75" />
+      <Button Name="PHAdd10Button" PrefWidth="24" PrefHeight="22" Padding="2" text="+10" ShowBorder="false" />
+      <Button Name="PHResetButton" PrefWidth="20" PrefHeight="20" ToolTip="Clear Font Size" text="&#10226;" ShowBorder="false" />
+    </RowView>
+    <RowView GrowWidth="true" Spacing="3">
+      <Label PrefWidth="64" PrefHeight="14" text="Min Width:" />
+      <Spinner Name="MinWidthSpinner" PrefWidth="75" />
+      <Button Name="MWAdd10Button" PrefWidth="24" PrefHeight="22" Padding="2" text="+10" ShowBorder="false" />
+      <Button Name="MWResetButton" PrefWidth="20" PrefHeight="20" ToolTip="Clear Font Size" text="&#10226;" ShowBorder="false" />
+    </RowView>
+    <RowView GrowWidth="true" Spacing="3">
+      <Label PrefWidth="64" text="Min Height:" />
+      <Spinner Name="MinHeightSpinner" PrefWidth="75" />
+      <Button Name="MHAdd10Button" PrefWidth="24" PrefHeight="22" Padding="2" text="+10" ShowBorder="false" />
+      <Button Name="MHResetButton" PrefWidth="20" PrefHeight="20" ToolTip="Clear Font Size" text="&#10226;" ShowBorder="false" />
+    </RowView>
+  </ColView>
+  <ColView GrowHeight="true" Spacing="6">
+    <RowView GrowWidth="true" Spacing="4">
+      <Label text="Padding:" />
+      <TextField Name="PaddingText" PrefWidth="100" ColCount="12" />
+      <Button Name="PadAdd5Button" PrefWidth="22" PrefHeight="22" Padding="2" text="+5" ShowBorder="false" />
+    </RowView>
+    <RowView PrefHeight="24" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="48" text="Spacing:" />
+      <Spinner Name="SpacingSpinner" PrefWidth="64" PrefHeight="22" />
+      <Button Name="SpaceAdd5Button" PrefWidth="22" PrefHeight="22" Padding="2" text="+5" ShowBorder="false" />
+    </RowView>
+    <RowView GrowWidth="true">
+      <Label text="LeanX: " />
+      <ToggleButton Name="LeanX0" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignLeft.png" ShowBorder="false" />
+      <ToggleButton Name="LeanX1" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignCenter.png" ShowBorder="false" />
+      <ToggleButton Name="LeanX2" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignRight.png" ShowBorder="false" />
+      <ToggleButton Name="LeanX3" PrefWidth="22" PrefHeight="22" Padding="2" text="&#10226;" ShowBorder="false" Selected="true" />
+    </RowView>
+    <RowView GrowWidth="true">
+      <Label text="LeanY: " />
+      <ToggleButton Name="LeanY0" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignTop.png" ShowBorder="false" />
+      <ToggleButton Name="LeanY1" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignMiddle.png" ShowBorder="false" />
+      <ToggleButton Name="LeanY2" PrefWidth="22" PrefHeight="22" Padding="2" image="pkg.images/AlignBottom.png" ShowBorder="false" />
+      <ToggleButton Name="LeanY3" PrefWidth="22" PrefHeight="22" Padding="2" text="&#10226;" ShowBorder="false" Selected="true" />
+    </RowView>
+    <CheckBox Name="GrowWidthCheckBox" text="Grow Width" />
+    <CheckBox Name="GrowHeightCheckBox" text="Grow Height" />
+    <RowView Align="TOP_LEFT" Padding="2" GrowWidth="true">
+      <Label PrefWidth="40" PrefHeight="22" text="Align:" />
+      <ColView>
+        <RowView GrowWidth="true">
+          <ToggleButton Name="Align0" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8598;" Position="TOP_LEFT" Group="tga" />
+          <ToggleButton Name="Align1" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8593;" Position="CENTER" Group="tga" />
+          <ToggleButton Name="Align2" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8599;" Position="TOP_RIGHT" Group="tga" />
+        </RowView>
+        <RowView GrowWidth="true">
+          <ToggleButton Name="Align3" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8592;" Position="CENTER" Group="tga" />
+          <ToggleButton Name="Align4" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8596;" Position="CENTER" Group="tga" />
+          <ToggleButton Name="Align5" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8594;" Position="CENTER" Group="tga" />
+        </RowView>
+        <RowView GrowWidth="true">
+          <ToggleButton Name="Align6" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8601;" Position="BOTTOM_LEFT" Group="tga" />
+          <ToggleButton Name="Align7" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8595;" Position="CENTER" Group="tga" />
+          <ToggleButton Name="Align8" PrefWidth="22" PrefHeight="22" Padding="2" text="&#8600;" Position="BOTTOM_RIGHT" Group="tga" />
+        </RowView>
+      </ColView>
+    </RowView>
+  </ColView>
+  <ColView GrowHeight="true" />
+  <ColView GrowHeight="true" Spacing="6">
+    <RowView PrefHeight="24" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="42" text="Border:" />
+      <ToggleButton Name="NoBdrButton" Padding="2" ToolTip="No Border" />
+      <ToggleButton Name="LowerBdrButton" Padding="2" ToolTip="RaisedBorder" />
+      <ToggleButton Name="RaiseBdrButton" Padding="2" ToolTip="Lowered Border" />
+      <ToggleButton Name="EtchBdrButton" Padding="2" ToolTip="Etched Border" />
+      <ToggleButton Name="LineBdrButton" Padding="2" ToolTip="Line Border" />
+    </RowView>
+    <RowView PrefHeight="22" GrowWidth="true" Spacing="4">
+      <Label text="Border Stroke:" />
+      <ColorButton Name="BorderColorButton" PrefWidth="32" PrefHeight="22" Title="Stroke" />
+      <Spinner Name="BorderWidthSpinner" PrefWidth="56" PrefHeight="22" />
+    </RowView>
+    <RowView PrefHeight="22" GrowWidth="true" Spacing="4">
+      <Label ToolTip="" text="Fill:" />
+      <ColorButton Name="FillColorButton" PrefWidth="32" PrefHeight="22" Title="ViewFill" />
+    </RowView>
+    <RowView PrefHeight="24" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="32" text="Font:" />
+      <ComboBox Name="FontCombo" MinWidth="100" MinHeight="22" />
+      <Button Name="FontResetButton" PrefWidth="22" PrefHeight="22" ToolTip="Clear Font Size" text="&#10226;" ShowBorder="false" />
+    </RowView>
+    <RowView PrefHeight="24" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="54" text="Font Size:" />
+      <TextField Name="FontSizeText" PrefWidth="40" ColCount="12" />
+      <Button Name="FontPlusButton" PrefWidth="22" PrefHeight="22" ToolTip="Increase Font Size" ShowBorder="false" />
+      <Button Name="FontMinusButton" PrefWidth="22" PrefHeight="22" ToolTip="Decrease Font Size" ShowBorder="false" />
+    </RowView>
+    <RowView PrefHeight="22" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="50" text="Opacity:" />
+      <Slider Name="OpacitySlider" PrefWidth="120" Max="1" Value="0" />
+    </RowView>
+    <RowView PrefHeight="22" GrowWidth="true" Spacing="4">
+      <Label PrefWidth="50" text="Rotation:" />
+      <ThumbWheel Name="RotationThumb" PrefWidth="120" PrefHeight="18" />
+    </RowView>
+    <CheckBox Name="VerticalCheckBox" text="Vertical" />
+  </ColView>
+</RowView>
