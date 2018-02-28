@@ -43,9 +43,7 @@ public Editor()
     enableEvents(MouseRelease);
     
     // Configure ContentBox
-    _cbox = new BoxView(); _cbox.setGrowWidth(true); _cbox.setGrowHeight(true);
-    _cbox.setFillWidth(true); _cbox.setFillHeight(true);
-    _cbox.setPickable(false);
+    _cbox = new BoxView(); _cbox.setFillWidth(true); _cbox.setFillHeight(true); _cbox.setPickable(false);
     _cbox.addDeepChangeListener(_contentDeepChangeLsnr);
     addChild(_cbox);
     
@@ -192,7 +190,7 @@ protected double getPrefWidthImpl(double aH)  { return BoxView.getPrefWidth(this
 protected double getPrefHeightImpl(double aW)  { return BoxView.getPrefHeight(this, _cbox, aW); }
 
 /** Override. */
-protected void layoutImpl()  { BoxView.layout(this, _cbox, null, false, false); }
+protected void layoutImpl()  { BoxView.layout(this, _cbox, null, true, true); }
 
 /**
  * Override to handle events.

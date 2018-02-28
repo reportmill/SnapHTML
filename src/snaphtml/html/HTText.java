@@ -71,6 +71,17 @@ public void setTextUnderlined(boolean aValue)
 }
 
 /**
+ * Override to propagate to TextArea.
+ */
+public void setFont(Font aFont)
+{
+    super.setFont(aFont);
+    if(aFont==null)
+        aFont = getFont();
+    getTextArea().setFont(aFont);
+}
+
+/**
  * Returns the text view.
  */
 public TextArea getTextArea()  { return getChildCount()>0? (TextArea)getChild(0) : null; }

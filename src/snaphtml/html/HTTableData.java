@@ -13,7 +13,7 @@ public class HTTableData extends HTElement {
  */
 public HTTableData()
 {
-    setBorder(Color.PINK.brighter().brighter(),1);
+    //setBorder(Color.PINK.brighter().brighter(),1);
     setGrowWidth(true);
 }
 

@@ -37,6 +37,57 @@ public String getTagName()
 public String getTagNameUC()  { return getTagName().toUpperCase(); }
 
 /**
+ * Returns the id.
+ */
+public String getId()  { return _jsoup.attributes().get("id"); }
+
+/**
+ * Returns the class.
+ */
+public String[] getClasses()
+{
+    String cls = _jsoup.attributes().get("class"); if(cls==null || cls.length()==0) return new String[0];
+    String classes[] = cls.split("\\s+");
+    return classes;
+}
+
+/**
+ * Returns the inline style for this element.
+ */
+public CSSStyle getStyle()
+{
+    String style = _jsoup.attributes().get("style");
+    Map <String,String> styles = style!=null && style.length()>0? new CSSParser().parseStyle(style) : new HashMap();
+    CSSStyle cs = new CSSStyle(styles); cs._emt = this;
+    return cs;
+}
+
+/**
+ * Returns the styles for this element in this doc.
+ */
+public CSSStyle getStyleAll()
+{
+    CSSStyle style = getStyle();
+    CSSStyles styles = getDoc().getStyles(); if(styles==null) return style;
+    return styles.getStyle(this);
+}
+
+/**
+ * Applies the styles.
+ */
+public void applyStyles()
+{
+    // Apply styles  - HTText is bogus
+    if(_jsoup!=null)
+       getStyleAll().applyStyles();
+       
+    // Recurse for children
+    for(View c : getChildren())
+        if(c instanceof HTElement)
+            ((HTElement)c).applyStyles();
+}
+
+/**
  * Returns the default alignment.
  */    
 public Pos getDefaultAlign()  { return Pos.TOP_LEFT; }
@@ -210,6 +261,16 @@ public static HTElement createHTML(Element aJSoup, HTDoc aDoc)
         case "ul": return new HTList();
         default: return new HTElement();
     }
+}
+
+/**
+ * Standard toString implementation.
+ */
+public String toString()
+{
+    String str = getClass().getSimpleName();
+    str += ' ' + getTagName();
+    return str;
 }
 
 }

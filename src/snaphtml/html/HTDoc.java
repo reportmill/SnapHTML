@@ -4,6 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import snap.gfx.Color;
 import snap.util.*;
+import snap.view.View;
 import snap.web.*;
 
 /**
@@ -16,6 +17,12 @@ public class HTDoc extends HTElement {
     
     // The title
     String      _title;
+    
+    // The Head
+    HTHead      _head;
+    
+    // The body
+    HTBody      _body;
     
 /**
  * Creates a new HTMLDoc.
@@ -44,8 +51,9 @@ public HTDoc(Object aSource)
     Document doc = Jsoup.parse(text); //doc = new Cleaner(Whitelist.basic()).clean(doc);
     readHTML(doc, this);
     
-    setPrefSize(800,800);
     setFill(Color.WHITE);
+    
+    getBody().applyStyles();
 }
 
 /**
@@ -72,6 +80,31 @@ public String getTitle()  { return _title; }
  * Sets the title.
  */
 public void setTitle(String aTitle)  { _title = aTitle; }
+
+/**
+ * Returns the head.
+ */
+public HTHead getHead()
+{
+    if(_head!=null) return _head;
+    for(View c : getChildren()) if(c instanceof HTHead) return _head = (HTHead)c;
+    return null;
+}
+
+/**
+ * Returns the body.
+ */
+public HTBody getBody()
+{
+    if(_body!=null) return _body;
+    for(View c : getChildren()) if(c instanceof HTBody) return _body = (HTBody)c;
+    return null;
+}
+
+/**
+ * Returns the CSSStyles.
+ */
+public CSSStyles getStyles()  { return getHead().getStyles(); }
 
 /**
  * Returns the source URL for given string path.
@@ -114,7 +147,8 @@ public static HTDoc getDoc(Object aSource)
     if(aSource instanceof HTDoc)
         return (HTDoc)aSource;
     try { return new HTDoc(aSource); }
-    catch(Exception e) { System.err.println("HTMLDoc.getDoc: Error reading source: " + e); return null; }
+    //catch(Exception e) { System.err.println("HTMLDoc.getDoc: Error reading source: " + e); return null; }
+    catch(Exception e) { e.printStackTrace(); return null; }
 }
 
 }
