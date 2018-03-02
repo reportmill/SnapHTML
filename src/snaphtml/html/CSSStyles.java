@@ -22,31 +22,35 @@ public CSSStyles(Map <String,Map<String,String>> aMap)
  */
 public CSSStyle getStyle(HTElement anEmt)
 {
-    CSSStyle style = anEmt.getStyle();
-    Map <String,String> smap = new HashMap();
+    CSSStyle style = anEmt.getStyleDefault();
     
     // Add styles for tag
     String tag = anEmt.getTagName();
     Map <String,String> tmap = _styles.get(tag);
-    if(tmap!=null) smap.putAll(tmap);
-    
-    // Add styles for id
-    String id = anEmt.getId();
-    if(id!=null) {
-        Map <String,String> imap = _styles.get('#' + id);
-        if(imap!=null) smap.putAll(imap);
-    }
+    if(tmap!=null) style.addAll(tmap);
     
     // Add styles for classes
     String classes[] = anEmt.getClasses();
     for(String cls : classes) {
         Map <String,String> cmap = _styles.get('.' + cls);
-        if(cmap!=null) smap.putAll(cmap);
+        if(cmap!=null) style.addAll(cmap);
+        cmap = _styles.get(tag + '.' + cls);
+        if(cmap!=null) style.addAll(cmap);
     }
     
-    // Add styles from inline
-    smap.putAll(style._styles);
-    style._styles = smap;
+    // Add styles for id
+    String id = anEmt.getId();
+    if(id!=null) {
+        Map <String,String> imap = _styles.get('#' + id);
+        if(imap!=null) style.addAll(imap);
+    }
+    
+    // Add element inline style
+    CSSStyle inline = anEmt.getStyle();
+    if(inline!=null)
+        style.addAll(inline._styles);
+    
+    // Return
     return style;
 }
 

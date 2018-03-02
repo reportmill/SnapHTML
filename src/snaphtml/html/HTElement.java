@@ -54,11 +54,16 @@ public String[] getClasses()
 /**
  * Returns the inline style for this element.
  */
+public CSSStyle getStyleDefault()  { CSSStyle cs = new CSSStyle(); cs._emt = this; return cs; }
+
+/**
+ * Returns the inline style for this element.
+ */
 public CSSStyle getStyle()
 {
-    String style = _jsoup.attributes().get("style");
-    Map <String,String> styles = style!=null && style.length()>0? new CSSParser().parseStyle(style) : new HashMap();
-    CSSStyle cs = new CSSStyle(styles); cs._emt = this;
+    String style = _jsoup.attributes().get("style"); if(style==null || style.length()==0) return null;
+    Map <String,String> styles = new CSSParser().parseStyle(style);
+    CSSStyle cs = new CSSStyle(); cs._emt = this; cs.addAll(styles);
     return cs;
 }
 
@@ -67,9 +72,13 @@ public CSSStyle getStyle()
  */
 public CSSStyle getStyleAll()
 {
-    CSSStyle style = getStyle();
-    CSSStyles styles = getDoc().getStyles(); if(styles==null) return style;
-    return styles.getStyle(this);
+    CSSStyles styles = getDoc().getStyles();
+    if(styles!=null)
+        return styles.getStyle(this);
+        
+    CSSStyle cs = getStyleDefault();
+    CSSStyle cs2 = getStyle(); if(cs2!=null) cs.addAll(cs2._styles);
+    return cs;
 }
 
 /**
