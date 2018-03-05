@@ -12,7 +12,7 @@ public class HTText extends HTElement {
  */
 public HTText()
 {
-    TextArea tarea = new TextArea(); tarea.setFill(null);
+    TextArea tarea = new TextArea();
     addChild(tarea);
 }
 
@@ -76,8 +76,6 @@ public void setTextUnderlined(boolean aValue)
 public void setFont(Font aFont)
 {
     super.setFont(aFont);
-    if(aFont==null)
-        aFont = getFont();
     getTextArea().setFont(aFont);
 }
 

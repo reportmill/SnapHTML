@@ -104,95 +104,41 @@ public Pos getDefaultAlign()  { return Pos.TOP_LEFT; }
 /**
  * Sets the HTML width for this view, which usually means min.
  */
-public void setHTMLWidth(String aVal)  { setMinWidth(StringUtils.doubleValue(aVal)); }
+public void setHTMLWidth(double aVal)  { setMinWidth(aVal); }
 
 /**
  * Sets the HTML width for this view, which usually means min.
  */
-public void setHTMLHeight(String aVal)  { setMinHeight(StringUtils.doubleValue(aVal)); }
+public void setHTMLHeight(double aVal)  { setMinHeight(aVal); }
 
 /**
- * Override.
+ * Sets the HTML width for this view, which usually means min.
  */
-protected double getPrefWidthImpl(double aH)
+public void setHTMLWidth(String aVal)
 {
-    if(isHorizontal() && hasBreakTag()) {
-        Insets ins = getInsetsAll();
-        View children[][] = getBreakChildren();
-        double bw = 0; for(View[] childs : children)
-            bw = Math.max(bw, RowView.getPrefWidth(this, childs, 0, aH)); // Need to add Insets.EMTPY
-        return bw + ins.getWidth();
-    }
-    return super.getPrefWidthImpl(aH);
+    if(aVal.contains("%")) return;
+    double val = SnapUtils.doubleValue(aVal);
+    setHTMLWidth(val);
 }
 
 /**
- * Override.
+ * Sets the HTML width for this view, which usually means min.
  */
-protected double getPrefHeightImpl(double aW)
+public void setHTMLHeight(String aVal)
 {
-    if(isHorizontal() && hasBreakTag()) {
-        Insets ins = getInsetsAll();
-        View children[][] = getBreakChildren();
-        double bh = 0; for(View[] childs : children)
-            bh += ColView.getPrefHeight(this, childs, 0, aW);
-        return bh + ins.getHeight();
-    }
-    return super.getPrefHeightImpl(aW);
+    if(aVal.contains("%")) return;
+    double val = SnapUtils.doubleValue(aVal);
+    setMinHeight(val);
 }
 
-/**
- * Override.
- */
-protected void layoutImpl()
-{
-    if(isHorizontal() && hasBreakTag()) {
-        Insets ins = getInsetsAll().clone();
-        View children[][] = getBreakChildren();
-        for(View[] childs : children) {
-            RowView.layout(this, childs, ins, false, false, 0);
-            double maxy = 0; for(int i=0;i<childs.length;i++) maxy = Math.max(maxy, childs[i].getMaxY());
-            ins.top = maxy;
-        }
-    }
-    else super.layoutImpl();
-}
+/** Override to use HTLayout. */
+protected double getPrefWidthImpl(double aH)  { return HTLayout.getPrefWidth(this, aH); }
 
-/**
- * Returns whether tag is a break tag.
- */
-boolean isBreakTag(String aStr)
-{
-    return aStr.equals("p") || aStr.equals("br") || aStr.equals("hr") || aStr.equals("div") ||
-        aStr.equals("ol") || aStr.equals("ul");
-}
+/** Override to use HTLayout. */
+protected double getPrefHeightImpl(double aW)  { return HTLayout.getPrefHeight(this, aW); }
 
-/**
- * Returns whether child has break tag.
- */
-public boolean hasBreakTag()
-{
-    for(int i=1,iMax=getChildCount();i<iMax;i++) { HTElement emt = (HTElement)getChild(i);
-        if(isBreakTag(emt.getTagName()))
-            return true; }
-    return false;
-}
-
-/**
- * Returns whether child has break tag.
- */
-public View[][] getBreakChildren()
-{
-    List <View[]> top = new ArrayList();
-    List <View> curr = new ArrayList();
-    for(View child : getChildren()) { HTElement emt = (HTElement)child;
-        if(isBreakTag(emt.getTagName())) {
-            top.add(curr.toArray(new View[0])); curr.clear(); }
-        curr.add(child);
-    }
-    top.add(curr.toArray(new View[0]));
-    return top.toArray(new View[0][]);
-}
+/** Override to use HTLayout. */
+protected void layoutImpl()  { HTLayout.layout(this); }
 
 /**
  * Reads HTML.
@@ -209,7 +155,7 @@ public void readHTML(Element aJSoup, HTDoc aDoc)
     if(attrs!=null)
     for(Attribute attr : attrs) {
         String name = attr.getKey();
-        String val = attr.getValue(); if(val.contains("%")) continue;
+        String val = attr.getValue();
         switch(name) {
             case "width": setHTMLWidth(val); break;
             case "height": setHTMLHeight(val); break;

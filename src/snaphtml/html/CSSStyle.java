@@ -67,6 +67,7 @@ public void applyStyle(String key, String val)
         case "padding-right": applyMarginPart(val, 1); break;
         case "padding-bottom": applyMarginPart(val, 2); break;
         case "padding-left": applyMarginPart(val, 3); break;
+        case "width": applyWidth(val); break;
     }
 }
 
@@ -144,13 +145,27 @@ public void applyMarginPart(String aVal, int anInd)
 /**
  * Returns a size for given string with num + unit, e.g.: 1px, 2pt, .1em.
  */
-public double getSize(String aStr, int ind)
+public double getSize(String aStr, int ind)  { return getSize(aStr, ind, _emt); }
+
+/**
+ * Applies the width.
+ */
+public void applyWidth(String aVal)
+{
+    double w = getSize(aVal, 0);
+    _emt.setHTMLWidth(w);
+}
+
+/**
+ * Returns a size for given string with num + unit, e.g.: 1px, 2pt, .1em.
+ */
+public static double getSize(String aStr, int ind, HTElement anEmt)
 {
     double val = SnapUtils.doubleValue(aStr), conv = 1;
     if(aStr.contains("px")) conv = 72/96d;
-    else if(aStr.contains("%")) conv = ind==1 || ind==3? _emt.getWidth()/100 : _emt.getHeight()/100;
+    else if(aStr.contains("%")) conv = ind==1 || ind==3? anEmt.getWidth()/100 : anEmt.getHeight()/100;
     else if(aStr.contains("pt")) conv = 1;
-    else if(aStr.contains("em")) conv = _emt.getFont().getSize();
+    else if(aStr.contains("em")) conv = anEmt.getFont().getSize();
     else System.out.println("Unknown unit: " + aStr);
     return Math.round(val * conv);
 }
