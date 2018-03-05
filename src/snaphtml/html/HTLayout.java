@@ -78,7 +78,8 @@ static boolean isBreakTag(String aStr)
  */
 public static boolean hasBreakTag(HTElement aPar)
 {
-    for(int i=1,iMax=aPar.getChildCount();i<iMax;i++) { HTElement emt = (HTElement)aPar.getChild(i);
+    for(int i=1,iMax=aPar.getChildCount();i<iMax;i++) { View child = aPar.getChild(i);
+        HTElement emt = child instanceof HTElement? (HTElement)child : null; if(emt==null) continue;
         if(isBreakTag(emt.getTagName()))
             return true; }
     return false;

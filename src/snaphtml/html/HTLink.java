@@ -60,9 +60,9 @@ public void readHTML(Element aJSoup, HTDoc aDoc)
     
     // Set all child text to red
     for(View child : getChildren()) {
-        if(child instanceof HTText) { HTText text = (HTText)child;
+        if(child instanceof TextArea) { TextArea text = (TextArea)child;
             text.setTextFill(Color.RED);
-            text.setTextUnderlined(true);
+            text.setUnderlined(true);
         }
     }
 }

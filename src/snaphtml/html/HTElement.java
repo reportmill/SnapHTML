@@ -131,6 +131,20 @@ public void setHTMLHeight(String aVal)
     setMinHeight(val);
 }
 
+/**
+ * Override to apply to HTText.
+ */
+public void setFont(Font aFont)
+{
+    // Do normal version
+    super.setFont(aFont);
+    
+    // Fowrard to text
+    for(View child : getChildren())
+        if(child instanceof TextArea)
+            child.setFont(getFont());
+}
+
 /** Override to use HTLayout. */
 protected double getPrefWidthImpl(double aH)  { return HTLayout.getPrefWidth(this, aH); }
 
