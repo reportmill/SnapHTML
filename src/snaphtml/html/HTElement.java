@@ -12,6 +12,9 @@ public class HTElement extends BoxView {
     
     // The JSoup Element
     Element     _jsoup;
+    
+    // The char start/end index of this element in doc HTML text
+    int         _charStart, _charEnd;
 
 /**
  * Returns the doc.
@@ -166,6 +169,121 @@ public void addText(String aStr)
 {
     HTText text = new HTText(); text.setText(aStr);
     addChild(text);
+}
+
+/**
+ * Returns the parent element.
+ */
+public HTElement getParentEmt()  { View par = getParent(); return par instanceof HTElement? (HTElement)par : null; }
+
+/**
+ * Returns the index of this element in parent.
+ */
+public int getChildEmtCount()  { int ec = 0; for(View c : getChildren()) if(c instanceof HTElement) ec++; return ec; }
+
+/**
+ * Returns the index of this element in parent.
+ */
+public HTElement getChildEmt(int anIndex)
+{
+    for(int i=0,iMax=getChildCount(),j=0;i<iMax;i++) { View child = getChild(i);
+        if(j==anIndex && child instanceof HTElement) return (HTElement)child;
+        if(child instanceof HTElement) j++;
+    }
+    throw new IndexOutOfBoundsException("HTElement.getChildElm: " + anIndex + " beyond " + getChildEmtCount());
+}
+
+/**
+ * Returns the index of this element in parent.
+ */
+public HTElement getChildEmtLast()
+{
+    HTElement ce = null; for(View c : getChildren()) if(c instanceof HTElement) ce = (HTElement)c; return ce;
+}
+
+/**
+ * Returns the index of this element in parent.
+ */
+public HTElement getChildEmtLastDeep()
+{
+    HTElement ce = getChildEmtLast();
+    HTElement ce2 = ce!=null? ce.getChildEmtLastDeep() : null;
+    return ce2!=null? ce2 : ce;
+}
+
+/**
+ * Returns the index of this element in parent.
+ */
+public int indexInParentEmt()
+{
+    HTElement par = getParentEmt(); if(par==null) return -1;
+    for(int i=0,iMax=par.getChildCount(),j=0;i<iMax;i++) { View child = getChild(i);
+        if(child==this) return j;
+        if(child instanceof HTElement) j++;
+    }
+    return -1;
+}
+
+/**
+ * Returns the previous element.
+ */
+public HTElement getEmtPrev()
+{
+    int ind = indexInParentEmt(); if(ind<=0) return getParentEmt();
+    HTElement par = getParentEmt();
+    HTElement ep = par.getChildEmt(ind-1);
+    HTElement epl = ep.getChildEmtLastDeep();
+    return epl!=null? epl : ep;
+}
+
+/**
+ * Returns the character index of this element in document HTML text.
+ */
+public int getCharStart()  { return _charStart; }
+
+/**
+ * Returns the character index of this element in document HTML text.
+ */
+public int getCharEnd()
+{
+    // If already set, just return
+    if(_charEnd>=0) return _charEnd;
+    
+    // Get doc text
+    String str = getDoc().getHtmlText();
+    
+    // Get tail text for this element from last whitespace to end
+    String str2 = getSoup().outerHtml();
+    int end2 = str2.length(); while(end2>0 && str2.charAt(end2-1)!='<') end2--;
+    str2 = str2.substring(end2);
+    
+    // Get search start from end of open tag or end of last child
+    int start = _charStart;
+    HTElement lastChild = getChildEmtLast();
+    if(lastChild!=null)
+        start = lastChild.getCharEnd();
+
+    // Get end by searching for tail text starting from
+    _charEnd = str.indexOf(str2, start) + str2.length();
+    return _charEnd;
+}
+
+/**
+ * Returns the HTElement in given char range.
+ */
+public HTElement getEmtInCharRange(int aStart, int aEnd)
+{
+    for(View child : getChildren()) {
+        HTElement emt = child instanceof HTElement? (HTElement)child : null; if(emt==null) continue;
+        HTElement emt2 = emt.getEmtInCharRange(aStart, aEnd);
+        if(emt2!=null)
+            return emt2;
+    }
+    
+    int cstart = getCharStart(), cend = getCharEnd();
+    if(cstart<=aStart && aEnd<=cend)
+        return this;
+    return null;
 }
 
 /**

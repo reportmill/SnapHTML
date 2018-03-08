@@ -24,6 +24,9 @@ public class HTDoc extends HTElement {
     // The body
     HTBody      _body;
     
+    // The HTML text
+    String      _htmText;
+    
 /**
  * Creates a new HTMLDoc.
  */
@@ -123,6 +126,37 @@ public WebURL getSourceURL(String aPath)
     String path = FilePathUtils.getPeer(spath, aPath);
     WebSite site = _srcURL.getSite();
     return site.getURL(path);
+}
+
+/**
+ * Returns the HTML text.
+ */
+public String getHtmlText()  { return getHtmlText(false); }
+
+/**
+ * Returns the HTML text with option to use cached version (otherwise, recache).
+ */
+public String getHtmlText(boolean useCache)
+{
+    if(_htmText!=null && useCache) return _htmText;
+    _htmText = getSoup().outerHtml();
+    setCharIndexes(this, _htmText, 0);
+    _charEnd = _htmText.length();
+    return _htmText;
+}
+
+/**
+ * Sets the char indexes for HTML text.
+ */
+int setCharIndexes(HTElement anEmt, String aStr, int aStart)
+{
+    String tag = anEmt.getTagName(); anEmt._charEnd = -1;
+    int start2 = anEmt._charStart = aStr.indexOf('<' + tag, aStart); start2 += tag.length() + 1;
+    for(View child : anEmt.getChildren()) {
+        HTElement emt = child instanceof HTElement? (HTElement)child : null; if(emt==null) continue;
+        start2 = setCharIndexes(emt, aStr, start2);
+    }
+    return start2;
 }
 
 /**

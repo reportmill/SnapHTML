@@ -100,6 +100,26 @@ public View getSelView()  { return _editor.getSelView(); }
 public void setSelView(View aView)  { _editor.setSelView(aView); }
 
 /**
+ * Called when SelPath is clicked.
+ */
+protected void setSelViewKeepPath(View aView)
+{
+    // Get whether given view is in current path
+    boolean inPath = false;
+    for(View v=_selPathDeep;v!=null && v!=getEditor().getContentBox();v=v.getParent()) if(v==aView) inPath = true;
+    
+    // Set SelView and restore SelPathDeep if view was in path
+    View deep = _selPathDeep;
+    getEditor().setSelView(aView);
+    if(inPath) _selPathDeep = deep;
+}
+
+/**
+ * Returns the selected element.
+ */
+public HTElement getSelEmt()  { return _editor.getSelEmt(); }
+
+/**
  * Creates a new default editor pane.
  */
 public EditorPane newDocument()
@@ -337,6 +357,7 @@ protected void initUI()
     
     // Create HTMText
     _htmText = new TextView(); _htmText.setName("HTMText"); _htmText.setFont(Font.Arial14);
+    _htmText.getTextArea().addPropChangeListener(pc -> htmTextSelDidChange(), TextView.Selection_Prop);
     
     // Get SelPathBox
     _selPathBox = getView("SelPathBox", RowView.class);
@@ -477,7 +498,7 @@ protected void respondUI(ViewEvent anEvent)
         if(_transPane.getContent()==_editorSplit) _transPane.setTransition(TransitionPane.MoveRight);
         else _transPane.setTransition(TransitionPane.MoveLeft);
         _transPane.setContent(_htmText);
-        updateHTMText();
+        updateHtmText();
      }
 
     // Handle PreviewButton
@@ -549,28 +570,47 @@ protected void updateSelPathBox()
 /**
  * Updates the HTMText TextView.
  */
-protected void updateHTMText()
+protected void updateHtmText()
 {
     // If not showing, just return
     if(!_htmText.isShowing()) return;
     
     // Get View
     HTDoc doc = getDoc();
-    String text = doc.getSoup().outerHtml();
+    String text = doc.getHtmlText();
     _htmText.setText(text);
+    runLaterDelayed(200, () -> updateHtmTextSel());
 }
 
 /**
  * Updates the HTMText TextView.
  */
-protected void updateHTMTextSel()
+protected void updateHtmTextSel()
 {
     // If not showing, just return
-    if(!_htmText.isShowing()) return;
+    if(!_htmText.isShowing() || _htmTextSelChanging) return;
     
     // Get View
-    View sview = getSelView();
+    HTElement selEmt = getSelEmt(); if(selEmt==null) { _htmText.setSel(0); return; }
+    int start = selEmt.getCharStart();
+    int end = selEmt.getCharEnd();
+    _htmText.setSel(start, end);
 }
+
+/**
+ * Updates the HTMText TextView.
+ */
+protected void htmTextSelDidChange()
+{
+    int start = _htmText.getSelStart(), end = _htmText.getSelEnd();
+    HTElement emt = getDoc().getEmtInCharRange(start, end);
+    _htmTextSelChanging = true;
+    setSelViewKeepPath(emt);
+    _htmTextSelChanging = false;
+}
+
+// 
+boolean _htmTextSelChanging;
 
 /**
  * Called when Editor.SelView changes.
@@ -578,18 +618,14 @@ protected void updateHTMTextSel()
 protected void editorSelViewChange()
 {
     _selPathDeep = getSelView();
+    updateHtmTextSel();
     resetLater();
 }
 
 /**
  * Called when SelPath is clicked.
  */
-protected void selPathItemClicked(View aView)
-{
-    View deep = _selPathDeep;
-    getEditor().setSelView(aView);
-    _selPathDeep = deep;
-}
+protected void selPathItemClicked(View aView)  { setSelViewKeepPath(aView); }
 
 /**
  * Shows/Hides ViewTree.
