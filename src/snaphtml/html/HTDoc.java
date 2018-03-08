@@ -62,6 +62,11 @@ public HTDoc(Object aSource)
 public String getTagName()  { return "html"; }
 
 /**
+ * Override to return JSoup as Document.
+ */
+public Document getSoup()  { return (Document)super.getSoup(); }
+
+/**
  * Returns the document source URL.
  */
 public WebURL getSourceURL()  { return _srcURL; }

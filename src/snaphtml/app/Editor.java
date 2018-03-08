@@ -106,14 +106,24 @@ public void setSelView(View aView)
 }
 
 /**
- * Adds a view to content.
+ * Returns the selected element.
  */
-public void addView(Class <? extends View> aCls)
+public HTElement getSelEmt()
 {
-    // Create view from class, configure, add
-    View view = null; try { view = aCls.newInstance(); } catch(Exception e) { }
-    ViewHpr.getHpr(view).configure(view);
-    addView(view);
+    View sview = getSelView();
+    if(sview instanceof HTElement) return (HTElement)sview;
+    return sview.getParent(HTElement.class);
+}
+
+/**
+ * Adds a tag to content.
+ */
+public void addTag(String aTag)
+{
+    HTElement selEmt = getSelEmt();
+    HTElement emt = HTElement.createHTML(selEmt, aTag);
+    emt.configureNew();
+    addView(emt);
 }
 
 /**

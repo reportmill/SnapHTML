@@ -71,13 +71,14 @@ public class ItemView extends BoxView {
         View fname = new Label(HTUtils.getTagFullName(aTag)); fname.setMinSize(24,12); fname.setPickable(false);
         View tag = new Label('<' + aTag + '>'); tag.setMinSize(24,12); tag.setPickable(false);
         setChildren(fname, tag);
+        setName(aTag);
     }
     
     /** Handle events. */
     protected void processEvent(ViewEvent anEvent)
     {
         if(anEvent.isMousePress())
-            _galleryPane._epane.getEditor().addView(getContent().getClass());
+            _galleryPane._epane.getEditor().addTag(getName());
     }
 }
 

@@ -16,4 +16,9 @@ public CSSStyle getStyleDefault()
     return cs;
 }
 
+/**
+ * Called to configure new for designer.
+ */
+public void configureNew()  { addText("Paragraph"); }
+
 }

@@ -155,6 +155,20 @@ protected double getPrefHeightImpl(double aW)  { return HTLayout.getPrefHeight(t
 protected void layoutImpl()  { HTLayout.layout(this); }
 
 /**
+ * Called to configure new for designer.
+ */
+public void configureNew()  { }
+
+/**
+ * Adds text to this element.
+ */
+public void addText(String aStr)
+{
+    HTText text = new HTText(); text.setText(aStr);
+    addChild(text);
+}
+
+/**
  * Reads HTML.
  */
 public void readHTML(XMLElement aXML, HTDoc aDoc)  { }
@@ -191,7 +205,8 @@ public void readHTMLChildren(Element aJSoup, HTDoc aDoc)
         
         // Handle Element: Create child, read and add
         if(node instanceof Element) { Element emt = (Element)node;
-            HTElement child = createHTML(emt, aDoc);
+            String tag = emt.tagName();
+            HTElement child = createHTML(tag);
             child._jsoup = emt;
             child.readHTML(emt, aDoc);
             addChild(child);
@@ -200,21 +215,18 @@ public void readHTMLChildren(Element aJSoup, HTDoc aDoc)
         // Handle TextNode
         else if(node instanceof TextNode) { TextNode tnode = (TextNode)node;
             String str = tnode.text().trim();
-            if(str!=null && str.length()>0) {
-                HTText text = new HTText(); text.setText(str);
-                addChild(text);
-            }
+            if(str!=null && str.length()>0)
+                addText(str);
         }
     }
 }
 
 /**
- * Creates an HTML element for given XML.
+ * Creates an HTML element for given tag.
  */
-public static HTElement createHTML(Element aJSoup, HTDoc aDoc)
+public static HTElement createHTML(String aTag)
 {
-    String name = aJSoup.tagName();
-    switch(name) {
+    switch(aTag) {
         case "a": return new HTLink();
         case "body": return new HTBody();
         case "head": return new HTHead();
@@ -230,6 +242,18 @@ public static HTElement createHTML(Element aJSoup, HTDoc aDoc)
         case "ul": return new HTList();
         default: return new HTElement();
     }
+}
+
+/**
+ * Creates an HTElement for given HTElement and tag.
+ */
+public static HTElement createHTML(HTElement anEmt, String aTag)
+{
+    HTElement emt = createHTML(aTag);
+    Document jsoupDoc = anEmt.getDoc().getSoup();
+    Element jsoup = jsoupDoc.createElement(aTag);
+    emt._jsoup = jsoup;
+    return emt;
 }
 
 /**
