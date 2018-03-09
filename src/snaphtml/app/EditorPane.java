@@ -577,7 +577,7 @@ protected void updateHtmText()
     
     // Get View
     HTDoc doc = getDoc();
-    String text = doc.getHtmlText();
+    String text = doc.getHtmlText(false);
     _htmText.setText(text);
     runLaterDelayed(200, () -> updateHtmTextSel());
 }

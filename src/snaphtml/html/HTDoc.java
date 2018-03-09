@@ -131,7 +131,7 @@ public WebURL getSourceURL(String aPath)
 /**
  * Returns the HTML text.
  */
-public String getHtmlText()  { return getHtmlText(false); }
+public String getHtmlText()  { return getHtmlText(true); }
 
 /**
  * Returns the HTML text with option to use cached version (otherwise, recache).
